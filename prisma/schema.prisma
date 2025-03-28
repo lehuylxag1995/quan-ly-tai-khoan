@@ -1,0 +1,67 @@
+// // This is your Prisma schema file,
+// // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model DonVi {
+  id     Int     @id @default(autoincrement())
+  TenDv  String  @unique @db.VarChar(100)
+  MaDv   String  @unique @db.VarChar(10)
+  GhiChu String?
+
+  //1 Đơn vị có nhiều phòng ban
+  TatCaPhongBan PhongBan[]
+
+  NgayTao DateTime @default(now())
+  NgaySua DateTime @updatedAt
+}
+
+model PhongBan {
+  id      Int      @id @default(autoincrement())
+  TenPb   String   @unique @db.VarChar(100)
+  MaPb    String   @unique @db.VarChar(10)
+  NgayTao DateTime @default(now())
+  NgaySua DateTime @updatedAt
+
+  // Một phòng ban thuộc 1 Đơn vị
+  MaDvId String? @db.VarChar(10)
+  MaDv   DonVi?  @relation(fields: [MaDvId], references: [MaDv])
+
+  // Một Phòng Ban có nhiều người dùng gồm: quản lý, nhân viên, IT,...
+  NguoiDung NguoiDung[]
+}
+
+enum ChucVu {
+  TruongPhong
+  PhoPhong
+  VanPhong
+  IT
+}
+
+model NguoiDung {
+  id          Int      @id @default(autoincrement())
+  Email       String   @unique
+  MatKhau     String   @db.VarChar(255)
+  SoDienThoai String?  @db.VarChar(13)
+  DiaChi      String?  @db.VarChar(150)
+  KichHoat    Boolean  @default(false)
+  NgayTao     DateTime @default(now())
+  NgaySua     DateTime @updatedAt
+
+  //Chức vụ của nhân viên là gì ?
+  ChucVu ChucVu @default(VanPhong)
+
+  //Một người dùng làm tại một phòng ban
+  PhongBanId Int?
+  PhongBan   PhongBan? @relation(fields: [PhongBanId], references: [id])
+}
