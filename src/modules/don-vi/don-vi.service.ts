@@ -11,7 +11,6 @@ export class DonViService {
 
   //Cách 1: Dùng Prisma Client's generate
   async create(data: Prisma.DonViCreateInput): Promise<DonVi> {
-    console.log(data);
     return this.prisma.donVi.create({ data });
   }
 

@@ -19,7 +19,7 @@ model DonVi {
   MaDv   String  @unique @db.VarChar(10)
   GhiChu String?
 
-  //1 Đơn vị có nhiều phòng ban
+  //Một Đơn vị có nhiều phòng ban
   TatCaPhongBan PhongBan[]
 
   NgayTao DateTime @default(now())
@@ -61,7 +61,7 @@ model NguoiDung {
   //Chức vụ của nhân viên là gì ?
   ChucVu ChucVu @default(VanPhong)
 
-  //Một người dùng làm tại một phòng ban
-  PhongBanId Int?
-  PhongBan   PhongBan? @relation(fields: [PhongBanId], references: [id])
+  //Một người dùng chỉ công tác tại một phòng ban
+  PhongBanId String?
+  PhongBan   PhongBan? @relation(fields: [PhongBanId], references: [MaPb])
 }

@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePhongBanDto } from './dto/create-phong-ban.dto';
 import { UpdatePhongBanDto } from './dto/update-phong-ban.dto';
+import { PrismaService } from 'src/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PhongBanService {
-  create(createPhongBanDto: CreatePhongBanDto) {
-    return 'This action adds a new phongBan';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(data: Prisma.PhongBanCreateInput) {
+    console.log(data);
+    return await this.prisma.phongBan.create({ data });
   }
 
   findAll() {

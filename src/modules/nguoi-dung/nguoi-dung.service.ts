@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { CreateNguoiDungDto } from './dto/create-nguoi-dung.dto';
 import { UpdateNguoiDungDto } from './dto/update-nguoi-dung.dto';
+import { PrismaService } from 'src/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class NguoiDungService {
-  create(createNguoiDungDto: CreateNguoiDungDto) {
-    return 'This action adds a new nguoiDung';
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async create(createNguoiDungDto: Prisma.NguoiDungCreateInput) {
+    return await this.prismaService.nguoiDung.create({
+      data: createNguoiDungDto,
+    });
   }
 
   findAll() {

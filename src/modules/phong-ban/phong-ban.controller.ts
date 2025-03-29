@@ -1,15 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PhongBanService } from './phong-ban.service';
 import { CreatePhongBanDto } from './dto/create-phong-ban.dto';
 import { UpdatePhongBanDto } from './dto/update-phong-ban.dto';
+import { Prisma } from '@prisma/client';
 
 @Controller('phong-ban')
 export class PhongBanController {
   constructor(private readonly phongBanService: PhongBanService) {}
 
   @Post()
-  create(@Body() createPhongBanDto: CreatePhongBanDto) {
-    return this.phongBanService.create(createPhongBanDto);
+  async create(@Body() createPhongBanDto: Prisma.PhongBanCreateInput) {
+    return await this.phongBanService.create(createPhongBanDto);
   }
 
   @Get()
@@ -23,7 +32,10 @@ export class PhongBanController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePhongBanDto: UpdatePhongBanDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updatePhongBanDto: UpdatePhongBanDto,
+  ) {
     return this.phongBanService.update(+id, updatePhongBanDto);
   }
 
